@@ -1,4 +1,4 @@
-(ns flat-hunter
+(ns flat-hunter.ingest
   (:require [net.cgrand.enlive-html :as html]))
 
 (def *base-url* "http://www.brolliet.ch/fr/locataires/louer-un-bien")
