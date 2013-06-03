@@ -10,5 +10,6 @@
                  ;; and also to hickory
                  [hickory "0.4.1"]
                  [ring "0.2.5"]
+                 [clj-http "0.7.1"]
                  [net.cgrand/moustache "1.0.0-SNAPSHOT"]]
   :main flat-hunter.core)
