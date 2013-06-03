@@ -84,7 +84,7 @@
 	[]
   (time
   	(doseq [ flat-page (all-links-to-flats) ]
-	  	(print (fetch-flat-details)) (flush)
+	  	(println (fetch-flat-details flat-page)) (flush)
   )))
 
 ;; TODO: Read the details of each ad contained in 'is-results' and create a vector of result maps
