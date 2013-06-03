@@ -23,7 +23,10 @@
   [page]
   (let [select (html/select page [:td.pagination :li.numbers])
         string (first(map html/text select))]
-    (Integer. (second(re-find #"[0-9]+ / ([0-9]+)" string)))))
+    (->> string
+         (re-find #"[0-9]+ / ([0-9]+)")
+         second
+         (Integer. ))))
 
 
 (def ^:dynamic *base-url* "http://www.brolliet.ch/fr/locataires/louer-un-bien")
