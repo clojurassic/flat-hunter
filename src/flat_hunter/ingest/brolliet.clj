@@ -12,8 +12,11 @@
 ;; TODO: error handling, absence of pagination widget
 
 
+
 (defn fetch-url [url]
   (html/html-resource (java.net.URL. url)))
+
+
 
 (defn extract-count-of-pages
   "given a page from broillet.ch extract page count"
@@ -33,20 +36,37 @@
   (map #(str *base-url* "/page=" %) (range 2 (inc count-pages))))
 
 (def other-pages
-  (map fetch-url other-urls)) 
+  (map fetch-url other-urls))
+
+(def attributes
+    [[[:td.localite] :localite]
+    [[:td.rue] :rue]
+    [[:td.type] :type]
+    [[:td.pieces] :pieces]
+    [[:td.surface] :surface]
+    [[:td.montant] :montant]])
+
+(defn extract-sel [coll] (map first coll))
+
+(defn extract-key [coll] (map second coll))
+
+(def selectors (->> attributes extract-sel set))
+(def flat-keys (->> attributes extract-key vec))
 
 (defn extract-flats-from-page
   "given a full page from broillet.ch extract flat infos"
   [page]
-  (partition 6 (map html/text (html/select page #{[:td.localite]
-                                                  [:td.rue]
-                                                  [:td.type]
-                                                  [:td.pieces]
-                                                  [:td.surface]
-                                                  [:td.montant]
-                                                  }))))
+  (->> selectors
+       (html/select page)
+       (map html/text)
+       (partition 6)))
+
+
+(defn make-map [coll]
+  (map  #(zipmap flat-keys %)  coll))
+
 (defn ingest
   "returns list of flat infos from broillet.ch"
-  []
-  (mapcat extract-flats-from-page (cons page-1 other-pages)))
+  [](make-map
+     (mapcat extract-flats-from-page (cons page-1 other-pages))))
 
