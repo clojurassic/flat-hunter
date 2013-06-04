@@ -14,6 +14,9 @@ Lists of flats with addresses:
 * [Enlive](https://github.com/cgrand/enlive/wiki)
 * [Enlive Tutorial](https://github.com/swannodette/enlive-tutorial)
 * [Enlive Selectors Syntax](http://enlive.cgrand.net/syntax.html)
+* [PhantomJS](https://github.com/ariya/phantomjs/wiki) _headless Webkit_
+* [Laser](https://github.com/Raynes/laser)
+* [Hickory](https://github.com/davidsantiago/hickory)
 
 ## Geospatial search
 
