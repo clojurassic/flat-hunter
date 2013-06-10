@@ -1,5 +1,6 @@
 (ns flat-hunter.ingest.brolliet
-  (:require [net.cgrand.enlive-html :as html]))
+  (:require [net.cgrand.enlive-html :as html])
+  (:use [flat-hunter.ingest.interface]))
 
 ;; scrapes broillet.ch to extract flat info
 
@@ -56,7 +57,7 @@
 (defn make-map [coll]
   (map  #(zipmap flat-keys %)  coll))
 
-(defn ingest
+(defmethod ingest :brolliet
   [{:keys [provider-name url]}]
   (let [page-1 (fetch-url url)
         count-pages (extract-count-of-pages page-1)
