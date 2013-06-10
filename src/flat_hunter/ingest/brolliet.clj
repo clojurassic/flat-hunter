@@ -29,18 +29,6 @@
          (Integer. ))))
 
 
-(def ^:dynamic *base-url* "http://www.brolliet.ch/fr/locataires/louer-un-bien")
-
-(def page-1 (fetch-url *base-url*))
-
-(def count-pages (extract-count-of-pages page-1))
-
-(def other-urls
-  (map #(str *base-url* "/page=" %) (range 2 (inc count-pages))))
-
-(def other-pages
-  (map fetch-url other-urls))
-
 (def attributes
     [[[:td.localite] :localite]
     [[:td.rue] :rue]
@@ -69,7 +57,11 @@
   (map  #(zipmap flat-keys %)  coll))
 
 (defn ingest
-  "returns list of flat infos from broillet.ch"
-  [](make-map
-     (mapcat extract-flats-from-page (cons page-1 other-pages))))
+  [{:keys [provider-name url]}]
+  (let [page-1 (fetch-url url)
+        count-pages (extract-count-of-pages page-1)
+        other-urls (map #(str url "/page=" %) (range 2 (inc count-pages)))
+        other-pages (map fetch-url other-urls)]
+  (make-map
+     (mapcat extract-flats-from-page (cons page-1 other-pages)))))
 
