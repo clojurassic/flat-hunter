@@ -1,10 +1,11 @@
 (ns flat-hunter.ingest.is
   (:require [hickory.core :as h]
-  					[hickory.select :as s]))
+  					[hickory.select :as s]
+  					[flat-hunter.ingest.interface :as interface]))
 
 
 (def immostreet-results-url-pattern
-	"http://www.immostreet.ch/fr/AdZone/Lookup/d1a01cea-17f5-41b4-94cf-1040a857b48e/%d/MonthlyRent_ASC?resultPerPage=%d")
+	"http://www.immostreet.ch/fr/AdZone/Lookup/7e4443e1-50fa-4fe1-a233-407f05fb6bbe/%d/MonthlyRent_ASC?resultPerPage=%d")
 
 (defn result-pages
 	"Returns the list of URIs to scrape"
@@ -35,8 +36,8 @@
 		(map #(str "http://www.immostreet.ch" %) links)
 	))
 
-(defn all-links-to-flats []
-	(flatten (map links-to-flats (result-pages 21 50))))
+(defn flat-urls []
+	(flatten (map links-to-flats (result-pages 21 1))))
 
 (defn make-field
 	[flat-elt]
@@ -79,13 +80,11 @@
 		)
 )
 
-(defn flats
-	"Return all flats details"
-	[]
-  (time
-  	(doseq [ flat-page (all-links-to-flats) ]
-	  	(println (fetch-flat-details flat-page)) (flush)
-  )))
+(defmethod interface/ingest :immostreet
+  [provider-name]
+  (for [url (flat-urls)]
+	  (fetch-flat-details url) 
+  ))
 
 ;; TODO: Read the details of each ad contained in 'is-results' and create a vector of result maps
 

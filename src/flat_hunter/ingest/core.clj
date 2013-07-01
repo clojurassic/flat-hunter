@@ -3,7 +3,7 @@
             [flat-hunter.ingest.interface :as interface]))
 
 (def providers
-  [ :brolliet ])
+  [ :brolliet :immostreet ])
 
 (defn ingest-all
   []

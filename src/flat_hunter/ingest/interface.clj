@@ -1,3 +1,5 @@
 (ns flat-hunter.ingest.interface)
 
-(defmulti ingest identity)
+(defmulti ingest
+  "Return all flats details"
+  identity)
