@@ -2,8 +2,10 @@
   (:require [flat-hunter.ingest.brolliet :as b]
             [flat-hunter.ingest.interface :as interface]))
 
-
 (def providers
-  [{:provider-name :brolliet, :url "http://www.brolliet.ch/fr/locataires/louer-un-bien"}])
+  [ :brolliet ])
 
-(interface/ingest (first providers))
+(defn ingest-all
+  []
+  (doseq [provider providers]
+    (println (interface/ingest provider))))

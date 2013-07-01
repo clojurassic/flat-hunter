@@ -1,6 +1,6 @@
 (ns flat-hunter.ingest.brolliet
-  (:require [net.cgrand.enlive-html :as html])
-  (:use [flat-hunter.ingest.interface]))
+  (:require [net.cgrand.enlive-html :as html]
+            [flat-hunter.ingest.interface :as interface]))
 
 ;; scrapes broillet.ch to extract flat info
 
@@ -12,7 +12,7 @@
 
 ;; TODO: error handling, absence of pagination widget
 
-
+(def BASE-URL "http://www.brolliet.ch/fr/locataires/louer-un-bien")
 
 (defn fetch-url [url]
   (html/html-resource (java.net.URL. url)))
@@ -57,9 +57,10 @@
 (defn make-map [coll]
   (map  #(zipmap flat-keys %)  coll))
 
-(defmethod ingest :brolliet
-  [{:keys [provider-name url]}]
-  (let [page-1 (fetch-url url)
+(defmethod interface/ingest :brolliet
+  [provider-name]
+  (let [url BASE-URL
+        page-1 (fetch-url url)
         count-pages (extract-count-of-pages page-1)
         other-urls (map #(str url "/page=" %) (range 2 (inc count-pages)))
         other-pages (map fetch-url other-urls)]
